@@ -34,7 +34,6 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Llama a la función que maneja el registro
                 handleSignUp();
             }
         });
