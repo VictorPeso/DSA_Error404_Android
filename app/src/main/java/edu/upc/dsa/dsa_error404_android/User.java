@@ -1,12 +1,12 @@
 package edu.upc.dsa.dsa_error404_android;
 
 public class User {
-    String id;
-    String name;
-    String password;
+    private String id;
+    private String username;
+    private String password;
 
     public User(String name, String password) {
-        this.name = name;
+        this.username = name;
         this.password = password;
     }
 
@@ -15,7 +15,7 @@ public class User {
     }
 
     public String getName() {
-        return name;
+        return username;
     }
 
 }

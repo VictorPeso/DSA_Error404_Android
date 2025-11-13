@@ -1,6 +1,8 @@
 package edu.upc.dsa.dsa_error404_android;
 
-import android.content.Intent; // <-- 1. AFEGIR AQUEST IMPORT
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,10 +22,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import edu.upc.dsa.dsa_error404_android.User;
+import edu.upc.dsa.dsa_error404_android.Credentials;
+
 public class LoginActivity extends AppCompatActivity {
 
     EditText etUsername, etPassword;
-    Button btnLogin, btnBackToMain; // <-- 2. AFEGIR LA VARIABLE PER AL BOTÓ
+    Button btnLogin, btnBackToMain;
     ApiService apiService;
 
     public static final String BASE_URL = "http://10.0.2.2:8080/dsaApp/";
@@ -43,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLoginSubmit);
-        btnBackToMain = findViewById(R.id.btnBackToMain); // <-- 3. ENLLAÇAR EL BOTÓ (amb l'ID del XML)
+        btnBackToMain = findViewById(R.id.btnBackToMain);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -52,22 +57,12 @@ public class LoginActivity extends AppCompatActivity {
 
         apiService = retrofit.create(ApiService.class);
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                handleLogin();
-            }
-        });
+        btnLogin.setOnClickListener(v -> handleLogin());
 
-        // <-- 4. AFEGIR LA LÒGICA DEL BOTÓ DE TORNAR -->
-        btnBackToMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Crear un Intent per obrir MainActivity
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                finish(); // Tanca LoginActivity
-            }
+        btnBackToMain.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 
@@ -80,7 +75,11 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        Credentials credentials = new Credentials(name, password);
+
+        Credentials credentials = new Credentials();
+        credentials.setNombre(name);
+        credentials.setPassword(password);
+
         Call<User> call = apiService.loginUser(credentials);
 
         call.enqueue(new Callback<User>() {
@@ -88,7 +87,18 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     User user = response.body();
+
                     Toast.makeText(LoginActivity.this, "Login OK! Benvingut " + user.getName(), Toast.LENGTH_LONG).show();
+
+                    SharedPreferences sharedPreferences = getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("username", user.getName());
+                    editor.apply();
+
+                    // 5. Abrir la actividad de la tienda (o la principal del juego)
+                    // Intent intent = new Intent(LoginActivity.this, ShopActivity.class);
+                    // startActivity(intent);
+                    // finish(); // Cierra el Login
 
                 } else {
                     Log.e("LoginActivity", "Error en onResponse: " + response.code());

@@ -1,7 +1,8 @@
 package edu.upc.dsa.dsa_error404_android;
 
-import android.content.Intent; // <-- 1. AFEGIR AQUEST IMPORT
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,9 +14,21 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import edu.upc.dsa.dsa_error404_android.User;
+import edu.upc.dsa.dsa_error404_android.Credentials;
+
 public class SignupActivity extends AppCompatActivity {
     EditText etUsuari, etPassword;
-    Button btnSignUp, btnBackToMain; // <-- 2. AFEGIR LA VARIABLE PER AL BOTÓ
+    Button btnSignUp, btnBackToMain;
+    ApiService apiService;
+
+    public static final String BASE_URL = "http://10.0.2.2:8080/dsaApp/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +44,14 @@ public class SignupActivity extends AppCompatActivity {
         etUsuari = findViewById(R.id.editUsuari);
         etPassword = findViewById(R.id.EditPassword);
         btnSignUp = findViewById(R.id.SignUp);
-        btnBackToMain = findViewById(R.id.btnBackToMain); // <-- 3. ENLLAÇAR EL NOU BOTÓ
+        btnBackToMain = findViewById(R.id.btnBackToMain);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        apiService = retrofit.create(ApiService.class);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,18 +60,16 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        // <-- 4. AFEGIR LA LÒGICA DEL BOTÓ DE TORNAR -->
         btnBackToMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Crear un Intent per obrir MainActivity
                 Intent intent = new Intent(SignupActivity.this, MainActivity.class);
                 startActivity(intent);
-                finish(); // Tanca SignupActivity
+                finish();
             }
         });
-
     }
+
     private void handleSignUp() {
         String usuari = etUsuari.getText().toString();
         String password = etPassword.getText().toString();
@@ -60,7 +78,38 @@ public class SignupActivity extends AppCompatActivity {
             Toast.makeText(this, "Dades incorrectes.", Toast.LENGTH_SHORT).show();
             return;
         }
-        Toast.makeText(this, "Registrant usuari: " + usuari, Toast.LENGTH_LONG).show();
-        finish();
+
+        Credentials credentials = new Credentials();
+        credentials.setNombre(usuari);
+        credentials.setPassword(password);
+
+        Call<User> call = apiService.registerUser(credentials);
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    // Codi 201
+                    Toast.makeText(SignupActivity.this, "Usuari registrat! Fes login.", Toast.LENGTH_LONG).show();
+                    finish();
+
+                } else if (response.code() == 409) {
+                    // Codi 409
+                    Log.e("SignupActivity", "Error en onResponse: " + response.code());
+                    Toast.makeText(SignupActivity.this, "Error: L'usuari ja existeix", Toast.LENGTH_LONG).show();
+
+                } else {
+                    // Altres errors
+                    Log.e("SignupActivity", "Error en onResponse: " + response.code());
+                    Toast.makeText(SignupActivity.this, "Error desconegut en el registre", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(SignupActivity.this, "Fallo de connexió: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e("SignupActivity", "Error en onFailure", t);
+            }
+        });
     }
 }

@@ -5,8 +5,9 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 
 public interface ApiService {
-    @POST("auth/register")
-    Call<User> registerUser(@Body User user);
-    @POST("auth/login")
+    @POST("game/users/register")
+    Call<User> registerUser(@Body Credentials credentials);
+
+    @POST("game/users/login")
     Call<User> loginUser(@Body Credentials credentials);
 }
