@@ -1,10 +1,31 @@
 package edu.upc.dsa.dsa_error404_android;
-public class Credentials {
-    String name;
-    String password;
 
-    public Credentials(String name, String password) {
-        this.name = name;
+public class Credentials {
+
+    private String nombre;
+    private String password;
+
+    public Credentials() {
+    }
+
+    public Credentials(String nombre, String password) {
+        this.nombre = nombre;
+        this.password = password;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
         this.password = password;
     }
 }
