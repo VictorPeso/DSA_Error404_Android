@@ -75,7 +75,7 @@ public class SignupActivity extends AppCompatActivity {
         String password = etPassword.getText().toString();
 
         if (usuari.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Dades incorrectes.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Datos incorrectos.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -90,24 +90,24 @@ public class SignupActivity extends AppCompatActivity {
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     // Codi 201
-                    Toast.makeText(SignupActivity.this, "Usuari registrat! Fes login.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignupActivity.this, "Usuario registrado! Haz login.", Toast.LENGTH_LONG).show();
                     finish();
 
                 } else if (response.code() == 409) {
                     // Codi 409
                     Log.e("SignupActivity", "Error en onResponse: " + response.code());
-                    Toast.makeText(SignupActivity.this, "Error: L'usuari ja existeix", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignupActivity.this, "Error: El usuario ya existe", Toast.LENGTH_LONG).show();
 
                 } else {
                     // Altres errors
                     Log.e("SignupActivity", "Error en onResponse: " + response.code());
-                    Toast.makeText(SignupActivity.this, "Error desconegut en el registre", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignupActivity.this, "Error desconocido en el registro", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(SignupActivity.this, "Fallo de connexió: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(SignupActivity.this, "Fallo de connexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 Log.e("SignupActivity", "Error en onFailure", t);
             }
         });

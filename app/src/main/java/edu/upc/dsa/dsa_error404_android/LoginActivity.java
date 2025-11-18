@@ -1,5 +1,6 @@
 package edu.upc.dsa.dsa_error404_android;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String BASE_URL = "http://10.0.2.2:8080/dsaApp/";
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,10 +70,9 @@ public class LoginActivity extends AppCompatActivity {
         String password = etPassword.getText().toString();
 
         if (name.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Introdueix usuari i contrasenya", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Introduce usuario y contraseña", Toast.LENGTH_SHORT).show();
             return;
         }
-
 
         Credentials credentials = new Credentials();
         credentials.setNombre(name);
@@ -85,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     User user = response.body();
 
-                    Toast.makeText(LoginActivity.this, "Login OK! Benvingut " + user.getName(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Login OK! Bienvenido " + user.getName(), Toast.LENGTH_LONG).show();
 
                     SharedPreferences sharedPreferences = getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -95,20 +96,19 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putInt("vidaInicial", user.getVidaInicial());
                     editor.apply();
 
-                    // 5. Abrir la actividad de la tienda (o la principal del juego)
-                    // Intent intent = new Intent(LoginActivity.this, ShopActivity.class);
-                    // startActivity(intent);
-                    // finish(); // Cierra el Login
+                    Intent intent = new Intent(LoginActivity.this, InicioLoginActivity.class);
+                    startActivity(intent);
+                    finish();
 
                 } else {
                     Log.e("LoginActivity", "Error en onResponse: " + response.code());
-                    Toast.makeText(LoginActivity.this, "Error: Usuari o contrasenya incorrectes", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Error: Usuario o contraseña incorrectas", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Fallo de connexió: " + t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Fallo de connexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 Log.e("LoginActivity", "Error en onFailure", t);
             }
         });

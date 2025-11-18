@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:text="Login"
         android:textColor="@color/teal_700"
         android:textSize="24sp" />
@@ -23,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/teal_700"
-        android:hint="Usuari"
+        android:hint="Usuario:"
         android:inputType="text"
         android:textColor="@android:color/black"
         android:textColorHint="@android:color/darker_gray" />
@@ -34,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/teal_700"
-        android:hint="Contrasenya"
+        android:hint="Contraseña:"
         android:inputType="textPassword"
         android:textColor="@android:color/black"
         android:textColorHint="@android:color/darker_gray" />
@@ -53,6 +54,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="@color/teal_700"
-        android:text="Tornar" />
+        android:text="Volver" />
 
 </LinearLayout>

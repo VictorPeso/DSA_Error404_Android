@@ -15,6 +15,12 @@
         android:theme="@style/Theme.DSA_Error404_Android"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".InicioLoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TiendaActivity"
+            android:exported="false" />
+        <activity
             android:name=".LogoActivity"
             android:exported="true">
             <intent-filter>
