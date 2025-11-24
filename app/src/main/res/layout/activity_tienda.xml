@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TiendaActivity"
-    android:background="@drawable/Fondo">
+    android:background="@drawable/fondo">
 
     <Button
         android:id="@+id/btnBackToInicioLogIn"
@@ -21,9 +21,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.963" />
 
-    <WebView
-        android:layout_width="409dp"
-        android:layout_height="656dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
