@@ -1,8 +1,11 @@
 package edu.upc.dsa.dsa_error404_android;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
+import android.text.InputType;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,14 +15,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignupActivity extends AppCompatActivity {
 
     EditText etUsuari, etEmail, etPassword, etRepeatPassword;
+    View strengthBar;
     Button btnSignUp, btnBackToMain;
     ApiService apiService;
+    boolean showPass1 = false;
+    boolean showPass2 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +34,43 @@ public class SignupActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.editEmail);
         etPassword = findViewById(R.id.EditPassword);
         etRepeatPassword = findViewById(R.id.editPassword2);
-
+        strengthBar = findViewById(R.id.passwordStrengthBar);
         btnSignUp = findViewById(R.id.SignUp);
         btnBackToMain = findViewById(R.id.btnBackToMain);
-
         apiService = RetrofitClient.getInstance().getMyApi();
 
         btnSignUp.setOnClickListener(v -> handleSignUp());
         btnBackToMain.setOnClickListener(v -> {
             startActivity(new Intent(SignupActivity.this, MainActivity.class));
             finish();
+        });
+
+        etPassword.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { updateStrengthBar(s.toString()); }
+            @Override public void afterTextChanged(android.text.Editable s) {}
+        });
+
+        etPassword.setOnTouchListener((v, event) -> {
+            int right = 2;
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= etPassword.getRight() - etPassword.getCompoundDrawables()[right].getBounds().width()) {
+                    togglePassword();
+                    return true;
+                }
+            }
+            return false;
+        });
+
+        etRepeatPassword.setOnTouchListener((v, event) -> {
+            int right = 2;
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                if (event.getRawX() >= etRepeatPassword.getRight() - etRepeatPassword.getCompoundDrawables()[right].getBounds().width()) {
+                    togglePassword2();
+                    return true;
+                }
+            }
+            return false;
         });
     }
 
@@ -56,7 +87,7 @@ public class SignupActivity extends AppCompatActivity {
 
         String emailRegex = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
         if (!email.matches(emailRegex)) {
-            Toast.makeText(this, "El formato del correo no es valido.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "El formato del correo no es válido.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -65,8 +96,12 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        String emailMinuscula = email.toLowerCase();
+        if (!isPasswordStrong(password)) {
+            Toast.makeText(this, "La contraseña debe tener mínimo 8 caracteres, mayúsculas, minúsculas y números.", Toast.LENGTH_LONG).show();
+            return;
+        }
 
+        String emailMinuscula = email.toLowerCase();
         String usuariMinuscula = usuari.toLowerCase();
 
         Credentials credentials = new Credentials();
@@ -76,27 +111,64 @@ public class SignupActivity extends AppCompatActivity {
 
         Call<User> call = apiService.registerUser(credentials);
         call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            @Override public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(SignupActivity.this, "Usuario registrado! Ya puedes iniciar sesión.", Toast.LENGTH_LONG).show();
                     finish();
-                }
-                else if (response.code() == 409) {
-                    Log.e("SignupActivity", "El usuario ya existe. " + response.code());
+                } else if (response.code() == 409) {
                     Toast.makeText(SignupActivity.this, "Error: El usuario ya existe.", Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Log.e("SignupActivity", "Error desconocido: " + response.code());
+                } else {
                     Toast.makeText(SignupActivity.this, "Error desconocido en el registro.", Toast.LENGTH_LONG).show();
                 }
             }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            @Override public void onFailure(Call<User> call, Throwable t) {
                 Toast.makeText(SignupActivity.this, "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.e("SignupActivity", "Error onFailure", t);
             }
         });
+    }
+
+    private boolean isPasswordStrong(String password) {
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$";
+        return password.matches(regex);
+    }
+
+    private void updateStrengthBar(String pass) {
+        if (pass.length() < 4) {
+            strengthBar.setBackgroundColor(Color.RED);
+        } else if (pass.length() < 8) {
+            strengthBar.setBackgroundColor(Color.YELLOW);
+        } else if (isPasswordStrong(pass)) {
+            strengthBar.setBackgroundColor(Color.GREEN);
+        } else {
+            strengthBar.setBackgroundColor(Color.YELLOW);
+        }
+    }
+
+    private void togglePassword() {
+        if (showPass1) {
+            etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            etPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_visibility_off, 0);
+            etPassword.setSelection(etPassword.getText().length());
+            showPass1 = false;
+        } else {
+            etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            etPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_visibility, 0);
+            etPassword.setSelection(etPassword.getText().length());
+            showPass1 = true;
+        }
+    }
+
+    private void togglePassword2() {
+        if (showPass2) {
+            etRepeatPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            etRepeatPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_visibility_off, 0);
+            etRepeatPassword.setSelection(etRepeatPassword.getText().length());
+            showPass2 = false;
+        } else {
+            etRepeatPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            etRepeatPassword.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_visibility, 0);
+            etRepeatPassword.setSelection(etRepeatPassword.getText().length());
+            showPass2 = true;
+        }
     }
 }
