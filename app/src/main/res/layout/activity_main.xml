@@ -23,8 +23,8 @@
 
     <Button
         android:id="@+id/Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="127dp"
+        android:layout_height="53dp"
         android:backgroundTint="#009688"
         android:fontFamily="sans-serif-smallcaps"
         android:text="Iniciar Sesión"
@@ -39,8 +39,8 @@
 
     <Button
         android:id="@+id/Singup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="127dp"
+        android:layout_height="53dp"
         android:backgroundTint="#009688"
         android:fontFamily="sans-serif-smallcaps"
         android:text="Registrarse"
@@ -48,10 +48,9 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.632" />
+        app:layout_constraintVertical_bias="0.594" />
 
     <TextView
         android:id="@+id/tvError"
@@ -90,16 +89,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.311" />
-
-    <Button
-        android:id="@+id/testButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TEST"
-        app:layout_constraintTop_toBottomOf="@id/Singup"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
