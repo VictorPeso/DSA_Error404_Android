@@ -17,7 +17,7 @@ public interface ApiService {
     Call<User> loginUser(@Body Credentials credentials);
 
     @POST("game/users/objects/buy")
-    Call<Void> comprarItem(@Body CompraRequest request);
+    Call<User> comprarItem(@Body CompraRequest request);
 
     @GET("game/shop/objects")
     Call<List<GameObject>> getALLGameObjects();

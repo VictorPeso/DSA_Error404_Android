@@ -53,7 +53,6 @@ public class TiendaActivity extends AppCompatActivity {
             return insets;
         });
 
-
         sharedPreferences = getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
 
         btnBackToInicioLogin = findViewById(R.id.btnBackToInicioLogIn);
@@ -123,7 +122,8 @@ public class TiendaActivity extends AppCompatActivity {
                 ProgressBarActivity.hide(PB);
 
                 Log.e("TiendaActivity", "Fallo de red al cargar datos del usuario.", t);
-                Toast.makeText(TiendaActivity.this, "Fallo de conexión. Mostrando datos locales.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TiendaActivity.this, "Fallo de conexión. Mostrando datos locales.", Toast.LENGTH_SHORT)
+                        .show();
                 actualizarMonedasUI();
             }
         });
@@ -182,21 +182,19 @@ public class TiendaActivity extends AppCompatActivity {
 
         ProgressBarActivity.show(PB);
 
-        Call<Void> call = apiService.comprarItem(request);
+        Call<User> call = apiService.comprarItem(request);
 
-        call.enqueue(new Callback<Void>() {
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 ProgressBarActivity.hide(PB);
 
-                if (response.isSuccessful()) {
-                    Toast.makeText(TiendaActivity.this, item.getNombre() + " comprado con éxito!", Toast.LENGTH_SHORT).show();
-
-                    int monedasActuales = prefs.getInt("monedas", 0);
-                    int nuevasMonedas = monedasActuales - item.getPrecio();
-
+                if (response.isSuccessful() && response.body() != null) {
+                    User usuarioActualizado = response.body();
+                    Toast.makeText(TiendaActivity.this, item.getNombre() + " comprado con éxito!", Toast.LENGTH_SHORT)
+                            .show();
                     SharedPreferences.Editor editor = prefs.edit();
-                    editor.putInt("monedas", nuevasMonedas);
+                    editor.putInt("monedas", usuarioActualizado.getMonedas());
                     editor.apply();
 
                     actualizarMonedasUI();
@@ -215,7 +213,7 @@ public class TiendaActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
                 ProgressBarActivity.hide(PB);
 
                 Toast.makeText(TiendaActivity.this, "Fallo de conexión:: " + t.getMessage(), Toast.LENGTH_LONG).show();
@@ -223,7 +221,6 @@ public class TiendaActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void actualizarMonedasUI() {
         int monedas = sharedPreferences.getInt("monedas", 0);

@@ -15,16 +15,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
 
     EditText etUsername, etPassword;
-    Button btnLogin, btnBackToMain;
+    Button btnLogin, btnBackToMain, btnExtras;
     ApiService apiService;
     ProgressBar PB;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLoginSubmit);
         btnBackToMain = findViewById(R.id.btnBackToMain);
+        btnExtras = findViewById(R.id.buttonExtras);
         PB = findViewById(R.id.progressBar);
 
         apiService = RetrofitClient.getInstance().getMyApi();
@@ -43,6 +41,10 @@ public class LoginActivity extends AppCompatActivity {
         btnBackToMain.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
+        });
+
+        btnExtras.setOnClickListener(v -> {
+            startActivity(new Intent(LoginActivity.this, ExtrasActivity.class));
         });
     }
 
@@ -74,12 +76,10 @@ public class LoginActivity extends AppCompatActivity {
                     User user = response.body();
                     Toast.makeText(LoginActivity.this, "Sesión iniciada. ¡Bienvenido " + user.getNombre(), Toast.LENGTH_LONG).show();
 
-                    // Guardar dades localment
                     SharedPreferences sharedPreferences = getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
 
                     editor.putString("username", user.getNombre().toLowerCase());
-                    //editor.putString("userId", user.getId());
                     editor.putInt("monedas", user.getMonedas());
                     editor.putInt("vidaInicial", user.getVidaInicial());
                     editor.apply();
@@ -96,10 +96,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 ProgressBarActivity.hide(PB);
-
                 Toast.makeText(LoginActivity.this, "Fallo de conexión: " + t.getMessage(), Toast.LENGTH_LONG).show();
                 Log.e("LoginActivity", "Error onFailure", t);
             }
         });
     }
 }
+

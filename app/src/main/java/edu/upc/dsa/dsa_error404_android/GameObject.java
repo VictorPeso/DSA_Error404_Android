@@ -8,6 +8,8 @@ public class GameObject {
     private String nombre;
     private int precio;
     private String descripcion;
+    @SerializedName("tipo")
+    private String tipo;
     private int cantidad;
 
     public GameObject() {
@@ -49,6 +51,14 @@ public class GameObject {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
 
     public int getCantidad() {
