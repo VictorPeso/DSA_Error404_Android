@@ -124,6 +124,8 @@ public class SignupActivity extends AppCompatActivity {
                     finish();
                 } else if (response.code() == 409) {
                     Toast.makeText(SignupActivity.this, "Error: El usuario ya existe.", Toast.LENGTH_LONG).show();
+                } else if (response.code() == 410) {
+                    Toast.makeText(SignupActivity.this, "Error: El correo ya está registrado.", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(SignupActivity.this, "Error desconocido en el registro.", Toast.LENGTH_LONG).show();
                 }

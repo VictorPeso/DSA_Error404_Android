@@ -26,7 +26,7 @@ public class CompraRequest {
     }
 
     public void setUserName(String userName) {
-        this.nombre = nombre;
+        this.nombre = userName;
     }
 }
 
