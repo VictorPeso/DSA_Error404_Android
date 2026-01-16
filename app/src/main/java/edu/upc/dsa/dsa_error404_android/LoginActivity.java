@@ -9,9 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import edu.upc.dsa.dsa_error404_android.network.RetrofitClient;
+import edu.upc.dsa.dsa_error404_android.network.ApiService;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import edu.upc.dsa.dsa_error404_android.network.ApiService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         btnExtras = findViewById(R.id.buttonExtras);
         PB = findViewById(R.id.progressBar);
 
-        apiService = RetrofitClient.getInstance().getMyApi();
+        apiService = RetrofitClient.getInstance().getApi();
 
         btnLogin.setOnClickListener(v -> handleLogin());
         btnBackToMain.setOnClickListener(v -> {

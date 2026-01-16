@@ -13,10 +13,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import edu.upc.dsa.dsa_error404_android.network.RetrofitClient;
+import edu.upc.dsa.dsa_error404_android.network.ApiService;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.upc.dsa.dsa_error404_android.network.ApiService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,7 +62,7 @@ public class EventosActivity extends AppCompatActivity {
         adapter = new EventoAdapter(this, eventos, evento -> registerToEvent(evento));
         recyclerViewEvents.setAdapter(adapter);
 
-        api = RetrofitClient.getInstance().getMyApi();
+        api = RetrofitClient.getInstance().getApi();
         loadEventos();
     }
 

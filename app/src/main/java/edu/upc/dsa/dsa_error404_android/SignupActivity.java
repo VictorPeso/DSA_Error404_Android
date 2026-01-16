@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import edu.upc.dsa.dsa_error404_android.network.RetrofitClient;
+import edu.upc.dsa.dsa_error404_android.network.ApiService;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,7 +42,7 @@ public class SignupActivity extends AppCompatActivity {
         strengthBar = findViewById(R.id.passwordStrengthBar);
         btnSignUp = findViewById(R.id.SignUp);
         btnBackToMain = findViewById(R.id.btnBackToMain);
-        apiService = RetrofitClient.getInstance().getMyApi();
+        apiService = RetrofitClient.getInstance().getApi();
         PB = findViewById(R.id.progressBar);
 
         btnSignUp.setOnClickListener(v -> handleSignUp());
