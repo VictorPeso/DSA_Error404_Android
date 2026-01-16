@@ -8,6 +8,7 @@ import edu.upc.dsa.dsa_error404_android.Evento;
 import edu.upc.dsa.dsa_error404_android.GameObject;
 import edu.upc.dsa.dsa_error404_android.RegistroEventoRequest;
 import edu.upc.dsa.dsa_error404_android.User;
+import edu.upc.dsa.dsa_error404_android.UserEvent;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -40,4 +41,6 @@ public interface ApiService {
 
     @POST("game/events/{id}/register")
     Call<Void> registerEvento(@Path("id") String id, @Body RegistroEventoRequest request);
+    @GET("game/events/{eventId}/users")
+    Call<List<UserEvent>> getUsersByEvent(@Path("eventId") String eventId);
 }

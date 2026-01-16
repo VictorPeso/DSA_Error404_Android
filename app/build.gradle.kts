@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation("com.squareup.picasso:picasso:2.71828")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
