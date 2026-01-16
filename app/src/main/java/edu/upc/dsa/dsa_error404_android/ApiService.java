@@ -11,27 +11,28 @@ import retrofit2.http.Query;
 
 public interface ApiService {
 
-    @POST("game/users/register")
+    @POST("api/game/users/register")
     Call<User> registerUser(@Body Credentials credentials);
 
-    @POST("game/users/login")
+    @POST("api/game/users/login")
     Call<User> loginUser(@Body Credentials credentials);
 
-    @POST("game/users/objects/buy")
+    @POST("api/game/users/objects/buy")
     Call<User> comprarItem(@Body CompraRequest request);
 
-    @GET("game/shop/objects")
+    @GET("api/game/shop/objects")
     Call<List<GameObject>> getALLGameObjects();
 
-    @GET("game/users/{username}")
+    @GET("api/game/users/{username}")
     Call<User> getUser(@Path("username") String username);
 
-    @GET("game/users/objects/list")
+    @GET("api/game/users/objects/list")
     Call<List<GameObject>> getUserObjects(@Query("nombre") String nombre);
 
-    @GET("game/events")
+    @GET("api/game/events")
     Call<List<Evento>> getEventos();
 
-    @POST("game/events/{id}/register")
+    @POST("api/game/events/{id}/register")
     Call<Void> registerEvento(@Path("id") String id, @Body RegistroEventoRequest request);
 }
+

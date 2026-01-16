@@ -25,7 +25,7 @@ public class EventosActivity extends AppCompatActivity {
 
     private RecyclerView recyclerViewEvents;
     private EventoAdapter adapter;
-    private ArrayList<Evento> eventos;
+    private final ArrayList<Evento> eventos = new ArrayList<>();
     private ApiService api;
     private String userId;
 
@@ -49,14 +49,13 @@ public class EventosActivity extends AppCompatActivity {
 
         recyclerViewEvents = findViewById(R.id.recyclerViewEvents);
         if (recyclerViewEvents == null) {
-            Toast.makeText(this, "Falta recyclerViewEvents en activity_inicio_eventos.xml", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Falta recyclerViewEvents en activity_eventos.xml", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }
-        recyclerViewEvents.setLayoutManager(new LinearLayoutManager(this));
 
-        eventos = new ArrayList<>();
-        adapter = new EventoAdapter(this, eventos, this::registerToEvent);
+        recyclerViewEvents.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new EventoAdapter(this, eventos, evento -> registerToEvent(evento));
         recyclerViewEvents.setAdapter(adapter);
 
         api = RetrofitClient.getInstance().getMyApi();
@@ -68,7 +67,7 @@ public class EventosActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Evento>> call, Response<List<Evento>> response) {
                 if (!response.isSuccessful() || response.body() == null) {
-                    Toast.makeText(EventosActivity.this, "Error cargando eventos" + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EventosActivity.this, "Error cargando eventos " + response.code(), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 eventos.clear();
