@@ -3,6 +3,8 @@ package edu.upc.dsa.dsa_error404_android;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import edu.upc.dsa.dsa_error404_android.EventosActivity;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 

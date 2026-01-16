@@ -18,6 +18,9 @@
             android:name=".EventosActivity"
             android:exported="false" />
         <activity
+            android:name=".EventosAvtivity"
+            android:exported="false" />
+        <activity
             android:name=".ExtrasActivity"
             android:exported="false" />
         <activity

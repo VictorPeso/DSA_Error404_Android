@@ -19,6 +19,7 @@ public class InicioLoginActivity extends AppCompatActivity {
     Button buttonTienda;
     Button buttonLogOut;
     Button buttonInventario;
+    Button buttonExtras;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -33,14 +34,10 @@ public class InicioLoginActivity extends AppCompatActivity {
             return insets;
         });
 
-        buttonTienda = findViewById(R.id.buttonTienda);
-
-        buttonTienda.setOnClickListener(v -> {
-            Intent intent = new Intent(InicioLoginActivity.this, TiendaActivity.class);
-            startActivity(intent);
-        });
-
         buttonLogOut = findViewById(R.id.buttonLogOut);
+        buttonInventario = findViewById(R.id.buttonInventario);
+        buttonExtras = findViewById(R.id.buttonExtras);
+        buttonTienda = findViewById(R.id.buttonTienda);
 
         buttonLogOut.setOnClickListener(v -> {
             SharedPreferences sharedPreferences = getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
@@ -49,17 +46,23 @@ public class InicioLoginActivity extends AppCompatActivity {
             editor.apply();
 
             Intent intent = new Intent(InicioLoginActivity.this, MainActivity.class);
-
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-
             finish();
         });
 
-        buttonInventario = findViewById(R.id.buttonInventario);
-
         buttonInventario.setOnClickListener(v -> {
             Intent intent = new Intent(InicioLoginActivity.this, InventarioActivity.class);
+            startActivity(intent);
+        });
+
+        buttonExtras.setOnClickListener(v -> {
+            Intent intent = new Intent(InicioLoginActivity.this, ExtrasActivity.class);
+            startActivity(intent);
+        });
+
+        buttonTienda.setOnClickListener(v -> {
+            Intent intent = new Intent(InicioLoginActivity.this, TiendaActivity.class);
             startActivity(intent);
         });
     }
