@@ -1,7 +1,6 @@
 package edu.upc.dsa.dsa_error404_android.network;
 
 import java.util.List;
-
 import edu.upc.dsa.dsa_error404_android.CompraRequest;
 import edu.upc.dsa.dsa_error404_android.Credentials;
 import edu.upc.dsa.dsa_error404_android.Evento;
@@ -9,10 +8,14 @@ import edu.upc.dsa.dsa_error404_android.GameObject;
 import edu.upc.dsa.dsa_error404_android.RegistroEventoRequest;
 import edu.upc.dsa.dsa_error404_android.User;
 import edu.upc.dsa.dsa_error404_android.UserEvent;
+import edu.upc.dsa.dsa_error404_android.Team;
+import edu.upc.dsa.dsa_error404_android.TeamInfoResponse;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -41,6 +44,16 @@ public interface ApiService {
 
     @POST("game/events/{id}/register")
     Call<Void> registerEvento(@Path("id") String id, @Body RegistroEventoRequest request);
+
     @GET("game/events/{eventId}/users")
     Call<List<UserEvent>> getUsersByEvent(@Path("eventId") String eventId);
+
+    @GET("teams/ranking")
+    Call<List<Team>> getTeamsRanking();
+
+    @PUT("teams/join/{teamName}/{userName}")
+    Call<Team> joinTeam(@Path("teamName") String teamName, @Path("userName") String userName);
+
+    @GET("teams/user/{userName}/team")
+    Call<TeamInfoResponse> getMyTeamInfo(@Path("userName") String userName);
 }
