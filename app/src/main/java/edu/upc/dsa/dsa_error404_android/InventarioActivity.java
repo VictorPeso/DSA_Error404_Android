@@ -14,9 +14,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import edu.upc.dsa.dsa_error404_android.network.RetrofitClient;
+import edu.upc.dsa.dsa_error404_android.network.ApiService;
+
+
 
 import java.util.List;
 
+import edu.upc.dsa.dsa_error404_android.network.ApiService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +47,7 @@ public class InventarioActivity extends AppCompatActivity {
         PB = findViewById(R.id.progressBar);
 
         sharedPreferences = getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
-        apiService = RetrofitClient.getInstance().getMyApi();
+        apiService = RetrofitClient.getInstance().getApi();
 
         recyclerViewInventario.setLayoutManager(new LinearLayoutManager(this));
 

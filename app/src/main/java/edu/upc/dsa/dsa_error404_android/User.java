@@ -22,7 +22,12 @@ public class User {
     @SerializedName("monedas")
     private int monedas;
 
-    // Constructor vacío
+    @SerializedName("points")
+    private int points;
+
+    @SerializedName("avatar")
+    private String avatar;
+
     public User() {
     }
 
@@ -32,7 +37,6 @@ public class User {
         this.email = email;
     }
 
-    // ID
     public String getId() {
         return id;
     }
@@ -41,7 +45,6 @@ public class User {
         this.id = id;
     }
 
-    // Nombre / username
     public String getNombre() {
         return username;
     }
@@ -50,12 +53,10 @@ public class User {
         this.username = username;
     }
 
-    // Alias opcional (por compatibilidad)
     public String getName() {
         return username;
     }
 
-    // Password
     public String getPassword() {
         return password;
     }
@@ -64,7 +65,6 @@ public class User {
         this.password = password;
     }
 
-    // Email
     public String getEmail() {
         return email;
     }
@@ -73,7 +73,6 @@ public class User {
         this.email = email;
     }
 
-    // Vida inicial
     public int getVidaInicial() {
         return vidaInicial;
     }
@@ -82,12 +81,27 @@ public class User {
         this.vidaInicial = vidaInicial;
     }
 
-    // Monedas
     public int getMonedas() {
         return monedas;
     }
 
     public void setMonedas(int monedas) {
         this.monedas = monedas;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
+    implementation("com.squareup.picasso:picasso:2.71828")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
@@ -46,6 +47,7 @@ dependencies {
 }
 
 dependencies {
+    implementation("com.squareup.picasso:picasso:2.71828")
     implementation("androidx.core:core-splashscreen:1.0.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 }
