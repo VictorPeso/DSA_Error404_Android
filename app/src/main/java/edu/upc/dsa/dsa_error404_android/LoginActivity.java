@@ -32,7 +32,6 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLoginSubmit);
         btnBackToMain = findViewById(R.id.btnBackToMain);
-        btnExtras = findViewById(R.id.buttonExtras);
         PB = findViewById(R.id.progressBar);
 
         apiService = RetrofitClient.getInstance().getMyApi();
@@ -41,10 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         btnBackToMain.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
             finish();
-        });
-
-        btnExtras.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, ExtrasActivity.class));
         });
     }
 
