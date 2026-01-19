@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="edu.upc.dsa.dsa_error404_android">
 
+    <queries>
+        <package android:name="com.UnityTechnologies.com.unity.template.urpblank" />
+    </queries>
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application

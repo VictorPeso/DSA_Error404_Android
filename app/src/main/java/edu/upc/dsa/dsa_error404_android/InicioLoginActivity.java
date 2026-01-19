@@ -14,12 +14,16 @@ import androidx.core.view.WindowInsetsCompat;
 import android.content.SharedPreferences;
 import android.content.Context;
 
+import android.widget.Toast;
+
 public class InicioLoginActivity extends AppCompatActivity {
 
     Button buttonTienda;
     Button buttonLogOut;
     Button buttonInventario;
     Button buttonExtras;
+
+    Button buttonJugar;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -38,6 +42,8 @@ public class InicioLoginActivity extends AppCompatActivity {
         buttonInventario = findViewById(R.id.buttonInventario);
         buttonExtras = findViewById(R.id.buttonExtras);
         buttonTienda = findViewById(R.id.buttonTienda);
+        buttonJugar = findViewById(R.id.buttonJugar);
+
 
         buttonLogOut.setOnClickListener(v -> {
             SharedPreferences sharedPreferences = getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
@@ -64,6 +70,35 @@ public class InicioLoginActivity extends AppCompatActivity {
         buttonTienda.setOnClickListener(v -> {
             Intent intent = new Intent(InicioLoginActivity.this, TiendaActivity.class);
             startActivity(intent);
+        });
+
+        buttonJugar.setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = getSharedPreferences("user_credentials", Context.MODE_PRIVATE);
+            String username = sharedPreferences.getString("username", "");
+            String packageName = "com.UnityTechnologies.com.unity.template.urpblank";
+
+            if (!username.isEmpty()) {
+                // Intentar obtener el intent de lanzamiento del paquete
+                Intent intent = getPackageManager().getLaunchIntentForPackage(packageName);
+
+                if (intent != null) {
+                    // Pasamos el username como extra
+                    intent.putExtra("USERNAME", username);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    try {
+                        startActivity(intent);
+                        Toast.makeText(this, "Abriendo juego...", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        Toast.makeText(this, "Error al abrir: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    // Si el intent es null, es que la app no está instalada o el nombre del paquete es incorrecto
+                    Toast.makeText(this, "El juego no está instalado. Verifica el nombre del paquete.", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(this, "Error: No hay usuario logueado", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
